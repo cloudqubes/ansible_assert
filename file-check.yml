@@ -1,0 +1,52 @@
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  ignore_errors: true
+  tasks:
+  - name: Check existing file
+    ansible.builtin.stat:
+      path: /home/ubuntu/test_file
+    register: test_file_1
+  - name: Check not existing file
+    ansible.builtin.stat:
+      path: /home/ubuntu/test_file_not_exists
+    register: test_file_2
+
+
+  - name: assert file exists
+    debug:
+      msg: "The file existssss"
+    when: test_file_1.stat.exists
+
+  - name: assert file does not exists
+    debug:
+      msg: "The file does not exists"
+    when: not test_file_2.stat.exists
+
+  - name: assert test_file exists
+    ansible.builtin.assert:
+      that: 
+      - "test_file_1.stat.exists"
+      success_msg: "OK: test_file exists"
+      fail_msg: "NOK: test_file does nox exists"
+
+  - name: assert test_file_2 exists
+    ansible.builtin.assert:
+      that: 
+      - "test_file_2.stat.exists"
+      success_msg: "OK: test_file_2 exists"
+      fail_msg: "NOK: test_file_2 does nox exists"
+
+  - name: assert test_file owner username is ubuntu
+    ansible.builtin.assert:
+      that: 
+      - "test_file_1.stat.pw_name == 'ubuntu'"
+      success_msg: "OK: test_file owner is ubuntu"
+      fail_msg: "NOK: test_file owner is not ubuntu"
+
+  - name: assert test_file owner groupname is not root
+    ansible.builtin.assert:
+      that: 
+      - "test_file_1.stat.pw_name != 'root'"
+      success_msg: "OK: test_file owner group is not root"
+      fail_msg: "NOK: test_file owner group is root"

@@ -1,0 +1,26 @@
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  ignore_errors: true
+  tasks:
+
+  - name: Populate service facts
+    ansible.builtin.service_facts:
+
+  - name: Print service facts
+    ansible.builtin.debug:
+      var: ansible_facts.services.apparmor
+
+  - name: assert apparmor is running
+    ansible.builtin.assert:
+      that: 
+      - "ansible_facts.services.apparmor.state == 'running'"
+      success_msg: "OK: apparmor is running"
+      fail_msg: "NOK: apparmor is not running"
+
+  - name: assert ssh.service is running
+    ansible.builtin.assert:
+      that: 
+      - "ansible_facts.services['ssh.service'].state == 'running'"
+      success_msg: "OK: apparmor is running"
+      fail_msg: "NOK: apparmor is not running"

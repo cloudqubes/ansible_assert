@@ -1,0 +1,23 @@
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  ignore_errors: true
+  tasks:
+  - name: cat test_file
+    ansible.builtin.command:
+      cmd: cat /home/ubuntu/test_file
+    register: test_file
+
+  - name: assert line in file
+    ansible.builtin.assert:
+      that: 
+      - "'This string is in file' in test_file.stdout"
+      success_msg: "OK: String is in file"
+      fail_msg: "NOK: String is not in file"
+
+  - name: assert line not in file
+    ansible.builtin.assert:
+      that: 
+      - "'This string is not in file' not in test_file.stdout"
+      success_msg: "OK: String is not in file"
+      fail_msg: "NOK: String is in file"
