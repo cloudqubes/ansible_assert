@@ -7,9 +7,9 @@
   - name: Populate service facts
     ansible.builtin.service_facts:
 
-  - name: Print service facts
-    ansible.builtin.debug:
-      var: ansible_facts.services.apparmor
+  # - name: Print service facts
+  #   ansible.builtin.debug:
+  #     var: ansible_facts.services
 
   - name: assert apparmor is running
     ansible.builtin.assert:
@@ -22,5 +22,12 @@
     ansible.builtin.assert:
       that: 
       - "ansible_facts.services['ssh.service'].state == 'running'"
-      success_msg: "OK: apparmor is running"
-      fail_msg: "NOK: apparmor is not running"
+      success_msg: "OK: ssh.service is running"
+      fail_msg: "NOK: ssh.service is not running"
+
+  - name: assert iscsi.service is not running
+    ansible.builtin.assert:
+      that: 
+      - "ansible_facts.services['iscsi.service'].state == 'inactive'"
+      success_msg: "OK: iscsi.service is not running"
+      fail_msg: "NOK: icsi.service is running"

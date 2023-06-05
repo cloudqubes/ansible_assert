@@ -1,0 +1,32 @@
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  ignore_errors: true
+  tasks:
+  - name: List loaded kernel modules
+    ansible.builtin.command:
+      cmd: "lsmod"
+    register: loaded_modules
+
+  - name: List all kernel modules
+    ansible.builtin.shell:
+      cmd: "find /lib/modules/$(uname -r) -name '*.ko*'"
+    register: all_modules
+
+  - name: print loded modules
+    ansible.builtin.debug:
+      var: all_modules
+
+  - name: Check iptables is loaded
+    ansible.builtin.assert:
+      that:
+      - "'ip_tables' in loaded_modules.stdout" 
+      success_msg: "OK: ip_tables is loaded"
+      fail_msg: "NOK: ip_tables is not loaded"
+
+  - name: Check virtiofs is availbale
+    ansible.builtin.assert:
+      that:
+      - "'virtiofs' in all_modules.stdout" 
+      success_msg: "OK: virtiofs is available"
+      fail_msg: "NOK: virtiofs is not available"

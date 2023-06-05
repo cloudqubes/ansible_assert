@@ -5,23 +5,12 @@
   tasks:
   - name: Check existing file
     ansible.builtin.stat:
-      path: /home/ubuntu/test_file
+      path: /home/ubuntu/test_file # This file exists
     register: test_file_1
   - name: Check not existing file
     ansible.builtin.stat:
-      path: /home/ubuntu/test_file_not_exists
+      path: /home/ubuntu/test_file_not_exists # This file does not exists
     register: test_file_2
-
-
-  - name: assert file exists
-    debug:
-      msg: "The file existssss"
-    when: test_file_1.stat.exists
-
-  - name: assert file does not exists
-    debug:
-      msg: "The file does not exists"
-    when: not test_file_2.stat.exists
 
   - name: assert test_file exists
     ansible.builtin.assert:
@@ -47,6 +36,6 @@
   - name: assert test_file owner groupname is not root
     ansible.builtin.assert:
       that: 
-      - "test_file_1.stat.pw_name != 'root'"
+      - "test_file_1.stat.gr_name != 'root'"
       success_msg: "OK: test_file owner group is not root"
       fail_msg: "NOK: test_file owner group is root"

@@ -7,7 +7,10 @@
     ansible.builtin.command:
       cmd: cat /home/ubuntu/test_file
     register: test_file
-
+  - name: debug test_file
+    ansible.builtin.debug:
+      var: test_file
+  
   - name: assert line in file
     ansible.builtin.assert:
       that: 
