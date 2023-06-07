@@ -7,6 +7,11 @@
     ansible.builtin.stat:
       path: /home/ubuntu/test_file # This file exists
     register: test_file_1
+
+  - name: debug test_file_1
+    ansible.builtin.debug:
+      var: test_file_1
+      
   - name: Check not existing file
     ansible.builtin.stat:
       path: /home/ubuntu/test_file_not_exists # This file does not exists

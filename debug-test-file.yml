@@ -1,0 +1,12 @@
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  ignore_errors: true
+  tasks:
+  - name: cat test_file
+    ansible.builtin.command:
+      cmd: cat /home/ubuntu/test_file
+    register: test_file
+  - name: debug test_file
+    ansible.builtin.debug:
+      var: test_file
