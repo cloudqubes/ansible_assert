@@ -2,6 +2,8 @@
   remote_user: ubuntu
   become: yes
   ignore_errors: true
+  # Run `echo "This string is in file" >> ~/test_file` to create the test file in home directory.
+  # Make sure `test_file_not_exists` is not in your home directory.
   tasks:
   - name: Check existing file
     ansible.builtin.stat:

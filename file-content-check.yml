@@ -2,12 +2,12 @@
   remote_user: ubuntu
   become: yes
   ignore_errors: true
+  #Run `echo "This string is in file" >> ~/test_file` to create the test file in home directory.
+  - name: debug test_file
   tasks:
   - name: cat test_file
     ansible.builtin.command:
-      cmd: cat /home/ubuntu/test_file
-    register: test_file
-  - name: debug test_file
+      cmd: cat /home/ubuntu/test_file 
     ansible.builtin.debug:
       var: test_file
   
