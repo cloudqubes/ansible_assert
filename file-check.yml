@@ -7,7 +7,7 @@
   tasks:
   - name: Check existing file
     ansible.builtin.stat:
-      path: /home/ubuntu/test_file # This file exists
+      path: /home/ubuntu/test_file # This file exists. If your path is different update this line accordingly.
     register: test_file_1
 
   - name: debug test_file_1

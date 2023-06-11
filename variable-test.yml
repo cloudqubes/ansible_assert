@@ -3,10 +3,10 @@
   become: yes
   ignore_errors: true
   tasks:
-  - name: cat test_file
+  - name: list files
     ansible.builtin.command:
-      cmd: cat /home/ubuntu/test_file
-    register: test_file
-  - name: debug test_file
+      cmd: ls -k /home/ubuntu
+    register: cmd_ls
+  - name: debug cmd_ls
     ansible.builtin.debug:
-      var: test_file
+      var: cmd_ls
