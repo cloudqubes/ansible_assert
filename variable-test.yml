@@ -7,6 +7,7 @@
     ansible.builtin.command:
       cmd: ls -k /home/ubuntu
     register: cmd_ls
+    
   - name: debug cmd_ls
     ansible.builtin.debug:
       var: cmd_ls
